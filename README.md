@@ -34,7 +34,9 @@ Can be used by anyone, you'll find games and random related commands here.
 Type Du help Random for more informations.
 
 
-About the chat category:
+
+
+**About the chat category:**
 
 Du help
 
@@ -49,7 +51,9 @@ Du hii
 Replies with random msg. (Du hii)
 
 
-About the music category:
+
+
+**About the music category:**
 
 Du play
 
@@ -68,7 +72,9 @@ Du remove
 Remove a song from the queue (Du remove [index])
 
 
-About the random category:
+
+
+**About the random category:**
 
 Du toss
 
@@ -98,6 +104,10 @@ Du avt
 
 Gives avatar of the person. (Du avt [member])
 
+
+**Update:**
+
+Due to some youtube-dl issues music feature is not working as of 19/12/20. I'm trying my best to fix it.
 
 **To check available moderation commands go through code or contact me: [Instagram]('https://www.instagram.com/___y.o.g.e.s.h_/') [Discord]('https://discord.gg/9Gg276D')
 
