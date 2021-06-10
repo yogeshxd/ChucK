@@ -7,7 +7,7 @@ Current suffix id 'DU ' but you can change it to your will.
 
 Here are all the present commands:
 
-Category list:
+<h1>Category list:</h1>
 
 1. Moderation
 
