@@ -9,25 +9,25 @@ Here are all the present commands:
 
 Category list:
 
-Moderation
+1. Moderation
 
 Can only be used by moderators and admins.
 
 Type Du help Moderation for more informations.
 
-Chat
+2. Chat
 
 Can be used by everyone and gathers every non specific commands.
 
 Type Du help Chat for more informations.
 
-Music
+3. Music
 
 Can be used by anyone and allows you to listen to music or videos.
 
 Type Du help Music for more informations.
 
-Random
+4. Random
 
 Can be used by anyone, you'll find games and random related commands here.
 
@@ -38,15 +38,15 @@ Type Du help Random for more informations.
 
 **About the chat category:**
 
-Du help
+1. Du help
 
 Show this message (Du help [category])
 
-Du poll
+2. Du poll
 
 Create a poll (9 maximum choices) (Du poll "[question]" [choices])
 
-Du hii
+3. Du hii
 
 Replies with random msg. (Du hii)
 
@@ -55,59 +55,59 @@ Replies with random msg. (Du hii)
 
 **About the music category:**
 
-Du play
+1. Du play
 
 Listen to a video from an url or from a youtube search (Du play [url/words])
 
-Du pause
+2. Du pause
 
 Pause the current video (Du pause)
 
-Du skip
+3. Du skip
 
-Skip the current video (Du skip)
+4. Skip the current video (Du skip)
 
 Du remove
 
-Remove a song from the queue (Du remove [index])
+5. Remove a song from the queue (Du remove [index])
 
 
 
 
 **About the random category:**
 
-Du toss
+1. Du toss
 
 Make a coin toss against the bot (Du toss [heads/tails])
 
-Du poke
+2. Du poke
 
 Mention someone randomly. (Du poke)
 
-Du roll
+3. Du roll
 
 Roll a [x] sided dice (Du roll [x])
 
-Du meme
+4. Du meme
 
 Watch a random meme from reddit (Du meme)
 
-Du rep
+5. Du rep
 
 Bot will repeat the text (Du rep [text])
 
-Du ping
+6. Du ping
 
 Checks wheather bot is online or not. (Du ping)
 
-Du avt
+7. Du avt
 
 Gives avatar of the person. (Du avt [member])
 
 
 **Update:**
 
-Due to some youtube-dl issues music feature is not working as of 19/12/20. I'm trying my best to fix it.
+*Due to some youtube-dl issues music feature is not working as of 19/12/20. I'm trying my best to fix it.*
 
 To check available moderation commands go through code or contact me: [Instagram](https://www.instagram.com/yogesh_.xd/)
 
