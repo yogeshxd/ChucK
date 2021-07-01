@@ -107,6 +107,8 @@ Here are all the present commands:
 
 <h4>Update:</h4>
 
+**youtube-dl issue is fixed and all parts of the bot is working fine now. Raise a issue if yu face any problem.**
+
 **Due to some youtube-dl issues music feature is not working as of 19/12/20. I'm trying my best to fix it.**
 
 To check available moderation commands go through code or contact me: [Instagram](https://www.instagram.com/yogesh_.xd/)
