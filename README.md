@@ -110,5 +110,3 @@ Here are all the present commands:
 **Due to some youtube-dl issues music feature is not working as of 19/12/20. I'm trying my best to fix it.**
 
 To check available moderation commands go through code or contact me: [Instagram](https://www.instagram.com/yogesh_.xd/)
-
-Feel free to post any complains or complements...
