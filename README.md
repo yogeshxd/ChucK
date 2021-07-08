@@ -111,4 +111,6 @@ Here are all the present commands:
 
 **Due to some youtube-dl issues music feature is not working as of 19/12/20. I'm trying my best to fix it.**
 
+You can now test the bot by joining [my discord server](https://discord.gg/NrpNqw8KTe)
+
 To check available moderation commands go through code or contact me: [Instagram](https://www.instagram.com/yogesh_.xd/)
