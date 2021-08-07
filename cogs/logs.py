@@ -106,9 +106,6 @@ class Logs(commands.Cog):
     
     @commands.Cog.listener()
     async def on_member_remove(self, member):
-        state = Logs.get_data(member.guild.id)
-        if state == None or state == (member.guild.id, 0): return
-
         channel = get(member.guild.text_channels, name='logs')
         embed = Logs.create_embed(None, f'**:outbox_tray: {member.mention} left the server**', 0xe74c3c, datetime.now())
         await channel.send(embed=embed)
