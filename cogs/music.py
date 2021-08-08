@@ -69,7 +69,7 @@ class Music(commands.Cog, name='Music'):
         else:
             voice = await channel.connect()     
 
-        #await ctx.message.delete()
+        await ctx.message.delete()
         if not voice.is_playing():
             self.song_queue[ctx.guild] = [song]
             self.message[ctx.guild] = await ctx.send(embed=song['embed'])
