@@ -105,12 +105,12 @@ Here are all the present commands:
  - Gives avatar of the person. (Du avt [member])
 
 
-<h4>Update:</h4>
+<h4>Updates:</h4>
 
-**youtube-dl issue is fixed and all parts of the bot is working fine now. Raise a issue if yu face any problem.**
+ - **youtube-dl issue is fixed and all parts of the bot is working fine now. Raise a issue if yu face any problem.**
 
-**Due to some youtube-dl issues music feature is not working as of 19/12/20. I'm trying my best to fix it.**
+ - **Due to some youtube-dl issues music feature is not working as of 19/12/20. I'm trying my best to fix it.**
 
 You can now test the bot by joining [my discord server](https://discord.gg/NrpNqw8KTe)
 
-To check available moderation commands go through code or contact me: [Instagram](https://www.instagram.com/yogesh_.xd/)
+To check available moderation commands go through code or contact me: [Instagram](https://www.instagram.com/xdyogesh/)
