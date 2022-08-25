@@ -109,7 +109,7 @@ Here are all the present commands:
 
  - **youtube-dl issue is fixed and all parts of the bot is working fine now. Raise a issue if yu face any problem.**
 
- - **Due to some youtube-dl issues music feature is not working as of 19/12/20. I'm trying my best to fix it.**
+ - ~**Due to some youtube-dl issues music feature is not working as of 19/12/20. I'm trying my best to fix it.**~
 
 You can now test the bot by joining [my discord server](https://discord.gg/NrpNqw8KTe)
 
