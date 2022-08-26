@@ -78,7 +78,7 @@ class Moderation(commands.Cog, name='Moderation'):
     @commands.has_permissions(manage_messages=True)
     async def announce(self, ctx, *, text):
         embed = (Embed(title='New announcement !', description=text, timestamp=datetime.now(), color=random.randint(0, 0xffffff))
-                 .set_author(name=f'By {ctx.author.display_name}', icon_url=ctx.author.avatar_url))
+        embed  = embed.set_author(name=f'By {ctx.author.display_name}', icon_url=ctx.author.avatar.url)
         await ctx.message.delete()
         await ctx.send('@here', embed=embed)
 
