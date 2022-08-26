@@ -1,6 +1,5 @@
 ffmpeg
 discord
 requests
-sqlite3
 selenium
 youtube_dl
