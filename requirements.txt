@@ -3,3 +3,4 @@ discord
 requests
 selenium
 youtube_dl
+PyNaCl
