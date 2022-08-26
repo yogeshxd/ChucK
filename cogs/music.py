@@ -108,5 +108,5 @@ class Music(commands.Cog, name='Music'):
             await self.edit_message(ctx)
 
 
-def setup(bot):
+async def setup(bot):
     bot.add_cog(Music(bot))

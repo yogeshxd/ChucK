@@ -107,6 +107,8 @@ Here are all the present commands:
 
 <h4>Updates:</h4>
 
+ - **updated the code according to new discord.py changes and also added config file to make it easy to setup the bot.**
+
  - **youtube-dl issue is fixed and all parts of the bot is working fine now. Raise a issue if yu face any problem.**
 
  - ~**Due to some youtube-dl issues music feature is not working as of 19/12/20. I'm trying my best to fix it.**~

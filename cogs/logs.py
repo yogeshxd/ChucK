@@ -158,5 +158,5 @@ class Logs(commands.Cog):
         await channel.send(embed=embed)
 
 
-def setup(bot):
+async def setup(bot):
     bot.add_cog(Logs(bot))

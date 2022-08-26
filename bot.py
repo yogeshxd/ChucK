@@ -3,14 +3,27 @@ from discord.ext import commands
 from os import environ
 import time
 import random
+import os
+import config
 
-bot = commands.Bot(command_prefix=['Du '])
+
+intents = discord.Intents.default()
+intents.message_content = True
+bot = commands.Bot(command_prefix='Du ', intents=intents)
+
+#bot = commands.Bot(command_prefix=['Du '])
 bot.remove_command('help')
 initial_extensions = ['cogs.admin', 'cogs.chat', 'cogs.music', 'cogs.random', 'cogs.logs', 'cogs.live']
 
-if __name__ == '__main__':
-    for extension in initial_extensions:
-        bot.load_extension(extension)
+async def load_extensions():
+    for filename in os.listdir("./cogs"):
+        if filename.endswith(".py"):
+            # cut off the .py from the file name
+            await bot.load_extension(f"cogs.{filename[:-3]}")
+
+##if __name__ == '__main__':
+##    for extension in initial_extensions:
+##        bot.load_extension(extension)
 
 @bot.event
 async def on_ready():
@@ -29,7 +42,7 @@ async def reload(ctx, extension):
 @bot.command(hidden=True)
 async def status(ctx, arg, arg2, arg3=None):
     author = ctx.message.author
-    if author.id == discord_id:
+    if author.id == config.author:
         if arg == 'playing':
             await bot.change_presence(activity=discord.Game(name=arg2))
         elif arg == 'streaming':
@@ -44,4 +57,4 @@ async def status(ctx, arg, arg2, arg3=None):
     else:
         await ctx.send('Fuck off. You are not authorized')
 
-bot.run('Discord_bot_token', bot=True, reconnect = True)
+bot.run(config.token, reconnect = True)

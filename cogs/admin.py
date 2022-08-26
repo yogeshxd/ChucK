@@ -89,5 +89,5 @@ class Moderation(commands.Cog, name='Moderation'):
         await ctx.message.delete()
         await ctx.send(embed=embed)
 
-def setup(bot):
+async def setup(bot):
     bot.add_cog(Moderation(bot))

@@ -58,5 +58,5 @@ class Random(commands.Cog, name='Random'):
         
 
 
-def setup(bot):
+async def setup(bot):
     bot.add_cog(Random(bot))

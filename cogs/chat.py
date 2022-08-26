@@ -102,5 +102,5 @@ class Chat(commands.Cog, name='Chat'):
         se = await ctx.send(embed=embed)
         
 
-def setup(bot):
+async def setup(bot):
     bot.add_cog(Chat(bot))
