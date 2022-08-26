@@ -9,7 +9,7 @@ import config
 
 intents = discord.Intents.default()
 intents.message_content = True
-bot = commands.Bot(command_prefix='Du ', intents=intents)
+bot = commands.Bot(command_prefix=config.ext, intents=intents)
 
 #bot = commands.Bot(command_prefix=['Du '])
 bot.remove_command('help')
