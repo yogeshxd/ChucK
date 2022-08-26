@@ -13,25 +13,25 @@ class Chat(commands.Cog, name='Chat'):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(brief='Du help [category]', description='Show this message')
-    async def help(self, ctx, category: str = None):
-        embed = Embed(color=0x3498db)
-        embed.title = '📋 Category list:' if not category else f'ℹ️ About the {category} category:'
-        await ctx.message.delete()
-        if not category:
-            for cat in self.bot.cogs:
-                if cat in ['Test', 'Logs']:
-                    pass
-                else:
-                    cog = self.bot.get_cog(cat)
-                    embed.add_field(name=cat, value=f"{cog.description}\nType `Du help {cat}` for more informations.", inline=False)
-        else:
-            for cmd in self.bot.get_cog(category.capitalize()).get_commands():
-                if cmd.hidden:
-                    pass
-                else:
-                    embed.add_field(name=f"Du {cmd.name}", value=f"{cmd.description} (`{cmd.brief}`)", inline=False)
-        await ctx.send(embed=embed)
+    # @commands.command(brief='Du help [category]', description='Show this message')
+    # async def help(self, ctx, category: str = None):
+    #     embed = Embed(color=0x3498db)
+    #     embed.title = '📋 Category list:' if not category else f'ℹ️ About the {category} category:'
+    #     await ctx.message.delete()
+    #     if not category:
+    #         for cat in self.bot.cogs:
+    #             if cat in ['Test', 'Logs']:
+    #                 pass
+    #             else:
+    #                 cog = self.bot.get_cog(cat)
+    #                 embed.add_field(name=cat, value=f"{cog.description}\nType `Du help {cat}` for more informations.", inline=False)
+    #     else:
+    #         for cmd in self.bot.get_cog(category.capitalize()).get_commands():
+    #             if cmd.hidden:
+    #                 pass
+    #             else:
+    #                 embed.add_field(name=f"Du {cmd.name}", value=f"{cmd.description} (`{cmd.brief}`)", inline=False)
+    #     await ctx.send(embed=embed)
 
     @commands.command(hidden=True)
     async def rules(self, ctx):
