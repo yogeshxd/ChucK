@@ -5,6 +5,7 @@ import time
 import random
 import os
 import config
+import asyncio
 
 
 intents = discord.Intents.default()
@@ -57,4 +58,10 @@ async def status(ctx, arg, arg2, arg3=None):
     else:
         await ctx.send('Fuck off. You are not authorized')
 
-bot.run(config.token, reconnect = True)
+#bot.run(config.token, reconnect = True)
+async def main():
+    async with bot:
+        await load_extensions()
+        await bot.start(config.token)
+
+asyncio.run(main())

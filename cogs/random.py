@@ -59,4 +59,4 @@ class Random(commands.Cog, name='Random'):
 
 
 async def setup(bot):
-    bot.add_cog(Random(bot))
+    await bot.add_cog(Random(bot))

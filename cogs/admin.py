@@ -90,4 +90,4 @@ class Moderation(commands.Cog, name='Moderation'):
         await ctx.send(embed=embed)
 
 async def setup(bot):
-    bot.add_cog(Moderation(bot))
+    await bot.add_cog(Moderation(bot))

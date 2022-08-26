@@ -109,4 +109,4 @@ class Music(commands.Cog, name='Music'):
 
 
 async def setup(bot):
-    bot.add_cog(Music(bot))
+    await bot.add_cog(Music(bot))
