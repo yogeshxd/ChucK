@@ -7,14 +7,17 @@ import os
 import config
 import asyncio
 
+import logging
 
+handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w')
+discord.utils.setup_logging(level=logging.DEBUG, handler=handler, root=False)
 intents = discord.Intents.default()
 intents.message_content = True
 bot = commands.Bot(command_prefix=config.ext, intents=intents)
 
 #bot = commands.Bot(command_prefix=['Du '])
 bot.remove_command('help')
-initial_extensions = ['cogs.admin', 'cogs.chat', 'cogs.music', 'cogs.random', 'cogs.logs', 'cogs.live']
+initial_extensions = ['cogs.admin', 'cogs.chat', 'cogs.music', 'cogs.random', 'cogs.chatai']
 
 async def load_extensions():
     for filename in os.listdir("./cogs"):
@@ -38,7 +41,7 @@ async def on_ready():
 
 @bot.command(hidden=True)
 async def reload(ctx, extension):
-    bot.reload_extension(extension)
+    await bot.reload_extension(extension)
 
 @bot.command(hidden=True)
 async def status(ctx, arg, arg2, arg3=None):
@@ -59,6 +62,7 @@ async def status(ctx, arg, arg2, arg3=None):
         await ctx.send('Fuck off. You are not authorized')
 
 #bot.run(config.token, reconnect = True)
+
 async def main():
     async with bot:
         await load_extensions()
