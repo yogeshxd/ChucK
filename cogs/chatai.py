@@ -17,7 +17,7 @@ class chatai(commands.Cog, name='chatai'):
     @staticmethod
     def ai(chat):
         url = "https://waifu.p.rapidapi.com/path"
-        querystring = {"user_id":"sample_user_id","message":"hello","from_name":"Boy","to_name":"Girl","situation":"Girl loves Boy.","translate_from":"auto","translate_to":"auto"}
+        querystring = {"user_id":"sample_user_id","message":chat,"from_name":"Boy","to_name":"Girl","situation":"Girl loves Boy.","translate_from":"auto","translate_to":"auto"}
         payload = {}
         headers = {
 	        "content-type": "application/json",
