@@ -5,7 +5,7 @@ Need to tweek a some things like bot token and your discrd id.
 
 Current suffix id 'DU ' but you can change it to your will.
 
-You can use ```Du help`` to get help with commands.
+You can use ```Du help``` to get help with commands.
 
 
 <h4>Updates:</h4>
