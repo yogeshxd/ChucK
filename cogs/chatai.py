@@ -21,7 +21,7 @@ class chatai(commands.Cog, name='chatai'):
         payload = {}
         headers = {
 	        "content-type": "application/json",
-	        "X-RapidAPI-Key": "6a8650cacfmshb61c8e8373e2bedp14d524jsn0cee3696e3f3",
+	        "X-RapidAPI-Key": "", #put you rapid api key here (goto https://rapidapi.com/waifuai/api/waifu/)
 	        "X-RapidAPI-Host": "waifu.p.rapidapi.com"
         }
         response = requests.request("POST", url, json=payload, headers=headers, params=querystring)
