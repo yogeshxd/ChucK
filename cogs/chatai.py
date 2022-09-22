@@ -38,7 +38,10 @@ class chatai(commands.Cog, name='chatai'):
                     message = await self.bot.wait_for("message", check=lambda message: message.author == ctx.author, timeout=60)
                     #await ctx.send("check 1 complete")
                     chat = message.content.lower()
-                    await ctx.send(chatai.ai(chat))
+                    async with ctx.typing():
+                        response = chatai.ai(chat)
+                        await asyncio.sleep(10)
+                    await ctx.send(response)
                 except asyncio.TimeoutError:
                     await ctx.send("Sorry, you didn't reply in time!")
                     await ctx.send("Waifu is not happy with you!!")
