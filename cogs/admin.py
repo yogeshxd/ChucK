@@ -16,14 +16,16 @@ class Moderation(commands.Cog, name='Moderation'):
         self.bot = bot
 
     @staticmethod
-    async def mute_handler(ctx, member, messages=False):
+    async def unmute_handler(ctx, member):
         role = get(member.guild.roles, name='Muted')
-        if not role in member.roles:
-            await member.add_roles(role)
-            await member.remove_roles(get(member.guild.roles, name='Member'))
-        else:
-            await member.add_roles(get(member.guild.roles, name='Member'))
-            await member.remove_roles(role)
+        await member.remove_roles(role)
+        await member.add_roles(get(member.guild.roles, name='Member'))
+
+    @staticmethod
+    async def mute_handler(ctx, member):
+        role = get(member.guild.roles, name='Muted')
+        await member.add_roles(role)
+        await member.remove_roles(get(member.guild.roles, name='Member'))
             
 
     @commands.command(aliases=['purge'], brief='Du clear [x]', description='Delete the [x] previous messages')
@@ -41,7 +43,7 @@ class Moderation(commands.Cog, name='Moderation'):
         embed = Embed(title=":mute: User muted", description=f'{ctx.author.mention} muted **{member}** for {time}.\nReason: {reason}', color=0xe74c3c)
         await ctx.send(embed=embed)
         await sleep(duration)
-        await self.mute_handler(ctx, member, True)
+        await self.unmute_handler(ctx, member, True)
         embed = Embed(color=0xe74c3c, description=f'{member.mention} has been unmuted.')
         await ctx.send(embed=embed)
 
