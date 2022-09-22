@@ -8,8 +8,10 @@ Current suffix id 'DU ' but you can change it to your will.
 You can use ```Du help``` to get help with commands.
 
 
-<h4>Updates:</h4>
+<h4>Update Log(Bottom up approch):</h4>
 
+ - **Fixed Mute command.**
+ 
  - **Added logging system. Now a lof file will be created after you start the bot.**
 
  - **Added new waifu ai. type ```Du start waifu``` to interact with it**
