@@ -43,7 +43,7 @@ class Moderation(commands.Cog, name='Moderation'):
         embed = Embed(title=":mute: User muted", description=f'{ctx.author.mention} muted **{member}** for {time}.\nReason: {reason}', color=0xe74c3c)
         await ctx.send(embed=embed)
         await sleep(duration)
-        await self.unmute_handler(ctx, member, True)
+        await self.unmute_handler(ctx, member)
         embed = Embed(color=0xe74c3c, description=f'{member.mention} has been unmuted.')
         await ctx.send(embed=embed)
 
