@@ -10,6 +10,8 @@ You can use ```Du help``` to get help with commands.
 
 <h4>Update Log(Bottom up approch):</h4>
 
+ - **Added Welcome msgs.**
+ 
  - **Fixed Mute command.**
  
  - **Added logging system. Now a lof file will be created after you start the bot.**
