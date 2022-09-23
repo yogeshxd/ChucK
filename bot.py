@@ -7,12 +7,17 @@ import os
 import config
 import asyncio
 
+from discord import Embed
+
 import logging
 
 handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w')
 discord.utils.setup_logging(level=logging.DEBUG, handler=handler, root=False)
+
 intents = discord.Intents.default()
 intents.message_content = True
+intents.members = True
+
 bot = commands.Bot(command_prefix=config.ext, intents=intents)
 
 #bot = commands.Bot(command_prefix=['Du '])
@@ -42,6 +47,19 @@ async def on_ready():
 @bot.command(hidden=True)
 async def reload(ctx, extension):
     await bot.reload_extension(extension)
+
+@bot.event
+async def on_member_join(member):
+    #channel = bot.get_channel(1017488032259133613)
+    gandu = "Welcome to "+"{}".format(member.guild.name)
+    embed = (Embed(title=gandu, description=member.mention, color=random.randint(0, 0xffffff))
+                  #.set_image(url = image)                                                                     #use this if you want big image
+                  #.set_footer(text = f"Please verify yourself from #Rules")
+                  .set_thumbnail(url = member.avatar) 
+                  )
+    role = discord.utils.get(member.guild.roles, name='Member')
+    await member.add_roles(role)                                                                                        # await channel.send(member.avatar)
+    await member.guild.system_channel.send(embed=embed)
 
 @bot.command(hidden=True)
 async def status(ctx, arg, arg2, arg3=None):
