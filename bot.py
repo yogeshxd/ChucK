@@ -84,6 +84,6 @@ async def status(ctx, arg, arg2, arg3=None):
 async def main():
     async with bot:
         await load_extensions()
-        await bot.start(config.token)
+        await bot.start(config.token, reconnect = True)
 
 asyncio.run(main())
