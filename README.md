@@ -8,7 +8,7 @@ Current suffix id 'DU ' but you can change it to your will.
 You can use ```Du help``` to get help with commands.
 
 
-<h4>Update Log(Bottom up approch):</h4>
+<h3>Update Log(Bottom up approch):</h3>
 
  - Please check [logs](https://github.com/yogeshxd/ChucK/blob/main/logs.md)
 
