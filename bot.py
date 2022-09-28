@@ -58,7 +58,7 @@ async def uptime(ctx):
     text = str(datetime.timedelta(seconds=difference))
     embed = discord.Embed(color=random.randint(0, 0xffffff))
     embed.add_field(name="Uptime", value=text)
-    embed.set_footer(text="24 7 Bot")
+    embed.set_footer(text="ChucK")
     try:
         await ctx.send(embed=embed)
     except discord.HTTPException:
