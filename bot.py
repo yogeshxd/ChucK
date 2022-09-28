@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 from os import environ
 import time
+import datetime
 import random
 import os
 import config
@@ -22,7 +23,7 @@ bot = commands.Bot(command_prefix=config.ext, intents=intents)
 
 #bot = commands.Bot(command_prefix=['Du '])
 bot.remove_command('help')
-initial_extensions = ['cogs.admin', 'cogs.chat', 'cogs.music', 'cogs.random', 'cogs.chatai']
+# initial_extensions = ['cogs.admin', 'cogs.chat', 'cogs.music', 'cogs.random', 'cogs.chatai']
 
 async def load_extensions():
     for filename in os.listdir("./cogs"):
@@ -42,11 +43,26 @@ async def on_ready():
         f'{i}'
         )
     print(f'Bot is ready to go!')
+    global start_time
+    start_time = time.time()
     await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name='Du help | Du invite'))
 
 @bot.command(hidden=True)
 async def reload(ctx, extension):
     await bot.reload_extension(extension)
+
+@bot.command(pass_context=True)
+async def uptime(ctx):
+    current_time = time.time()
+    difference = int(round(current_time - start_time))
+    text = str(datetime.timedelta(seconds=difference))
+    embed = discord.Embed(color=random.randint(0, 0xffffff))
+    embed.add_field(name="Uptime", value=text)
+    embed.set_footer(text="24 7 Bot")
+    try:
+        await ctx.send(embed=embed)
+    except discord.HTTPException:
+        await ctx.send("Current uptime: " + text)
 
 @bot.event
 async def on_member_join(member):
