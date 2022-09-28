@@ -73,10 +73,9 @@ async def on_member_join(member):
                   #.set_footer(text = f"Please verify yourself from #Rules")
                   .set_thumbnail(url = member.avatar) 
                   )
-    role = discord.utils.get(member.guild.roles, name='Member')
-    await member.add_roles(role)                                                                                        # await channel.send(member.avatar)
     await member.guild.system_channel.send(embed=embed)
-
+    role = discord.utils.get(member.guild.roles, name='Member')
+    await member.add_roles(role)   
 @bot.command(hidden=True)
 async def status(ctx, arg, arg2, arg3=None):
     author = ctx.message.author
