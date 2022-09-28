@@ -10,7 +10,7 @@ You can use ```Du help``` to get help with commands.
 
 <h4>Update Log(Bottom up approch):</h4>
 
-Please check [logs](https://github.com/yogeshxd/ChucK/blob/main/logs)
+Please check [logs](https://github.com/yogeshxd/ChucK/blob/main/logs.md)
 
 You can now test the bot by joining [my discord server](https://discord.gg/NrpNqw8KTe)
 
