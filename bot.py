@@ -8,6 +8,9 @@ import os
 import config
 import asyncio
 
+from discord import File
+from easy_pil import Editor, load_image_async, Font
+
 from discord import Embed
 
 import logging
@@ -64,18 +67,36 @@ async def uptime(ctx):
     except discord.HTTPException:
         await ctx.send("Current uptime: " + text)
 
+#Old welcomer
+# @bot.event
+# async def on_member_join(member):
+#     #channel = bot.get_channel(1017488032259133613)
+#     gandu = "Welcome to "+"{}".format(member.guild.name)
+#     embed = (Embed(title=gandu, description=member.mention, color=random.randint(0, 0xffffff))
+#                   #.set_image(url = image)
+#                   #.set_footer(text = f"Please verify yourself from #Rules")
+#                   .set_thumbnail(url = member.avatar) 
+#                   )
+#     await member.guild.system_channel.send(embed=embed)
+#     role = discord.utils.get(member.guild.roles, name='Member')
+#     await member.add_roles(role)
+
+#new welcomer
 @bot.event
 async def on_member_join(member):
-    #channel = bot.get_channel(1017488032259133613)
-    gandu = "Welcome to "+"{}".format(member.guild.name)
-    embed = (Embed(title=gandu, description=member.mention, color=random.randint(0, 0xffffff))
-                  #.set_image(url = image)                                                                     #use this if you want big image
-                  #.set_footer(text = f"Please verify yourself from #Rules")
-                  .set_thumbnail(url = member.avatar) 
-                  )
-    await member.guild.system_channel.send(embed=embed)
-    role = discord.utils.get(member.guild.roles, name='Member')
-    await member.add_roles(role)   
+    channel = member.guild.system_channel
+    background = Editor("pic1.jpg")
+    profile_image = await load_image_async(str(member.avatar))
+    profile = Editor(profile_image).resize((150, 150)).circle_image()
+    poppins = Font.poppins(size=50, variant="bold")
+    poppins_small = Font.poppins(size=20, variant="light")
+    background.paste(profile, (325, 90))
+    background.ellipse((325, 90), 150, 150, outline="white", stroke_width=5)
+    background.text((400, 260), f"WELCOME TO {member.guild.name}", color="white", font=poppins, align="center")
+    background.text((400, 325), f"{member.name}#{member.discriminator}", color="white", font=poppins_small, align="center")
+    file = File(fp=background.image_bytes, filename="pic1.jpg")
+    await channel.send(f"Hello {member.mention}! Welcome to {member.guild.name} For more info check out #rules", file=file)
+
 @bot.command(hidden=True)
 async def status(ctx, arg, arg2, arg3=None):
     author = ctx.message.author
