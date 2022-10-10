@@ -96,6 +96,8 @@ async def on_member_join(member):
     background.text((400, 325), f"{member.name}#{member.discriminator}", color="white", font=poppins_small, align="center")
     file = File(fp=background.image_bytes, filename="pic1.jpg")
     await channel.send(f"Hello {member.mention}! Welcome to {member.guild.name} For more info check out #rules", file=file)
+    role = discord.utils.get(member.guild.roles, name='Member')
+    await member.add_roles(role)
 
 @bot.command(hidden=True)
 async def status(ctx, arg, arg2, arg3=None):
