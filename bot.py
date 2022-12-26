@@ -117,12 +117,6 @@ async def status(ctx, arg, arg2, arg3=None):
 
 #bot.run(config.token, reconnect = True)
 
-#slash commands
-#@tree.command(name = "test", description = "Test command", guild=discord.Object(id=12417128931))
-@tree.command(name = "test", description = "Test command") #Add the guild ids in which the slash command will appear. If it should be in all, remove the argument, but note that it will take some time (up to an hour) to register the command if it's for all guilds.
-async def first_command(interaction):
-    await interaction.response.send_message("Hello!")
-
 async def main():
     async with bot:
         await load_extensions()
