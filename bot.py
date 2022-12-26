@@ -11,10 +11,32 @@ from discord import File
 from easy_pil import Editor, load_image_async, Font
 from discord import Embed
 import logging
+from discord_logging.handler import DiscordHandler
 
-#Logging
-handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w')
-discord.utils.setup_logging(level=logging.DEBUG, handler=handler, root=False)
+#New Logging
+webhook_url = config.wh
+logger = logging.getLogger()
+
+stream_format = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+discord_format = logging.Formatter("%(message)s")
+
+discord_handler = DiscordHandler(
+    "Doctor ChucK", 
+    webhook_url,)
+
+#discord_handler = DiscordHandler("Happy Bot", webhook_url, emojis={})
+discord_handler.setFormatter(discord_format)
+stream_handler = logging.StreamHandler()
+stream_handler.setFormatter(stream_format)
+
+# Add the handlers to the Logger
+logger.addHandler(discord_handler)
+logger.addHandler(stream_handler)
+logger.setLevel(logging.DEBUG)
+
+logger.info("This is an info message")
+logger.debug("A debug message - usually not that interesting")
+logger.error("Very nasty error messgae!")
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -22,19 +44,13 @@ intents.members = True
 
 bot = commands.Bot(command_prefix=config.ext, intents=intents)
 
-#bot = commands.Bot(command_prefix=['Du '])
 bot.remove_command('help')
-# initial_extensions = ['cogs.admin', 'cogs.chat', 'cogs.music', 'cogs.random', 'cogs.chatai']
 
 async def load_extensions():
     for filename in os.listdir("./Desktop/ChucK/cogs"):
         if filename.endswith(".py"):
             # cut off the .py from the file name
             await bot.load_extension(f"cogs.{filename[:-3]}")
-
-##if __name__ == '__main__':
-##    for extension in initial_extensions:
-##        bot.load_extension(extension)
 
 @bot.event
 async def on_ready():
@@ -114,8 +130,6 @@ async def status(ctx, arg, arg2, arg3=None):
         print('Status Updated')
     else:
         await ctx.send('Fuck off. You are not authorized')
-
-#bot.run(config.token, reconnect = True)
 
 async def main():
     async with bot:
