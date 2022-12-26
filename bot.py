@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+from discord import app_commands
 from os import environ
 import time
 import datetime
@@ -7,20 +8,22 @@ import random
 import os
 import config
 import asyncio
-
 from discord import File
 from easy_pil import Editor, load_image_async, Font
-
 from discord import Embed
-
 import logging
 
+#Logging
 handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w')
 discord.utils.setup_logging(level=logging.DEBUG, handler=handler, root=False)
 
 intents = discord.Intents.default()
 intents.message_content = True
 intents.members = True
+
+#Client and tree for app commands
+client = discord.Client(intents=intents)
+tree = app_commands.CommandTree(client)
 
 bot = commands.Bot(command_prefix=config.ext, intents=intents)
 
@@ -29,7 +32,7 @@ bot.remove_command('help')
 # initial_extensions = ['cogs.admin', 'cogs.chat', 'cogs.music', 'cogs.random', 'cogs.chatai']
 
 async def load_extensions():
-    for filename in os.listdir("./cogs"):
+    for filename in os.listdir("./Desktop/ChucK/cogs"):
         if filename.endswith(".py"):
             # cut off the .py from the file name
             await bot.load_extension(f"cogs.{filename[:-3]}")
@@ -48,6 +51,7 @@ async def on_ready():
     print(f'Bot is ready to go!')
     global start_time
     start_time = time.time()
+    await tree.sync()
     await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name='Du help | Du invite'))
 
 @bot.command(hidden=True)
@@ -68,36 +72,36 @@ async def uptime(ctx):
         await ctx.send("Current uptime: " + text)
 
 #Old welcomer
-# @bot.event
-# async def on_member_join(member):
-#     #channel = bot.get_channel(1017488032259133613)
-#     gandu = "Welcome to "+"{}".format(member.guild.name)
-#     embed = (Embed(title=gandu, description=member.mention, color=random.randint(0, 0xffffff))
-#                   #.set_image(url = image)
-#                   #.set_footer(text = f"Please verify yourself from #Rules")
-#                   .set_thumbnail(url = member.avatar) 
-#                   )
-#     await member.guild.system_channel.send(embed=embed)
-#     role = discord.utils.get(member.guild.roles, name='Member')
-#     await member.add_roles(role)
-
-#new welcomer
 @bot.event
 async def on_member_join(member):
-    channel = member.guild.system_channel
-    background = Editor("pic1.jpg")
-    profile_image = await load_image_async(str(member.avatar))
-    profile = Editor(profile_image).resize((150, 150)).circle_image()
-    poppins = Font.poppins(size=50, variant="bold")
-    poppins_small = Font.poppins(size=20, variant="light")
-    background.paste(profile, (325, 90))
-    background.ellipse((325, 90), 150, 150, outline="white", stroke_width=5)
-    background.text((400, 260), f"WELCOME TO {member.guild.name}", color="white", font=poppins, align="center")
-    background.text((400, 325), f"{member.name}#{member.discriminator}", color="white", font=poppins_small, align="center")
-    file = File(fp=background.image_bytes, filename="pic1.jpg")
-    await channel.send(f"Hello {member.mention}! Welcome to {member.guild.name} For more info check out #rules", file=file)
+    #channel = bot.get_channel(1017488032259133613)
+    gandu = "Welcome to "+"{}".format(member.guild.name)
+    embed = (Embed(title=gandu, description=member.mention, color=random.randint(0, 0xffffff))
+                  #.set_image(url = image)
+                  #.set_footer(text = f"Please verify yourself from #Rules")
+                  .set_thumbnail(url = member.avatar) 
+                  )
+    await member.guild.system_channel.send(embed=embed)
     role = discord.utils.get(member.guild.roles, name='Member')
     await member.add_roles(role)
+
+#new welcomer
+# @bot.event
+# async def on_member_join(member):
+#     channel = member.guild.system_channel
+#     background = Editor("pic1.jpg")
+#     profile_image = await load_image_async(str(member.avatar))
+#     profile = Editor(profile_image).resize((150, 150)).circle_image()
+#     poppins = Font.poppins(size=50, variant="bold")
+#     poppins_small = Font.poppins(size=20, variant="light")
+#     background.paste(profile, (325, 90))
+#     background.ellipse((325, 90), 150, 150, outline="white", stroke_width=5)
+#     background.text((400, 260), f"WELCOME TO {member.guild.name}", color="white", font=poppins, align="center")
+#     background.text((400, 325), f"{member.name}#{member.discriminator}", color="white", font=poppins_small, align="center")
+#     file = File(fp=background.image_bytes, filename="pic1.jpg")
+#     await channel.send(f"Hello {member.mention}! Welcome to {member.guild.name} For more info check out #rules", file=file)
+#     role = discord.utils.get(member.guild.roles, name='Member')
+#     await member.add_roles(role)
 
 @bot.command(hidden=True)
 async def status(ctx, arg, arg2, arg3=None):
@@ -118,6 +122,12 @@ async def status(ctx, arg, arg2, arg3=None):
         await ctx.send('Fuck off. You are not authorized')
 
 #bot.run(config.token, reconnect = True)
+
+#slash commands
+#@tree.command(name = "test", description = "Test command", guild=discord.Object(id=12417128931))
+@tree.command(name = "test", description = "Test command") #Add the guild ids in which the slash command will appear. If it should be in all, remove the argument, but note that it will take some time (up to an hour) to register the command if it's for all guilds.
+async def first_command(interaction):
+    await interaction.response.send_message("Hello!")
 
 async def main():
     async with bot:
