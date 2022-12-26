@@ -1,7 +1,5 @@
 <h4> Logs </h4>
 
-- **Added slash command support. NOTE: Currently it is only a simple test command.**
-
 - **Added a new improved welcome msg.**
 
 - **Added uptime command**
