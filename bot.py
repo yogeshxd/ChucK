@@ -1,6 +1,5 @@
 import discord
 from discord.ext import commands
-from discord import app_commands
 from os import environ
 import time
 import datetime
@@ -20,10 +19,6 @@ discord.utils.setup_logging(level=logging.DEBUG, handler=handler, root=False)
 intents = discord.Intents.default()
 intents.message_content = True
 intents.members = True
-
-#Client and tree for app commands
-client = discord.Client(intents=intents)
-tree = app_commands.CommandTree(client)
 
 bot = commands.Bot(command_prefix=config.ext, intents=intents)
 
@@ -51,7 +46,6 @@ async def on_ready():
     print(f'Bot is ready to go!')
     global start_time
     start_time = time.time()
-    await tree.sync()
     await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name='Du help | Du invite'))
 
 @bot.command(hidden=True)
