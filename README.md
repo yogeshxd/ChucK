@@ -1,6 +1,6 @@
 <h1>ChucK</h1>
 
-<a href="https://github.com/yogeshxd/chuck/graphs/contributors%22%3E
+<a
   <img src="https://contrib.rocks/image?repo=yogeshxd/chuck" />
 </a>
                                                             
