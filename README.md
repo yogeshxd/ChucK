@@ -2,8 +2,6 @@
 ChucK is a discord bot that does all the stuff you can ever imagine of. From moderationm to playing music to little games, it covers it all.
 
 
-<h4>NOTE: You will need to start both bot.py and bot2.py in order for slash commands to work.</h4>
-
 Need to tweek a some things like bot token and your discrd id.
 
 Current suffix id 'DU ' but you can change it to your will.
