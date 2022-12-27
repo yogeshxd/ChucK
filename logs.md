@@ -1,6 +1,6 @@
 <h4> Logs </h4>
 
-- **Added support for slash commands**
+- **Added support for slash commands. (Fixed all existing issues(New commands coming soon)**
 
 - **Added a new improved welcome msg.**
 
