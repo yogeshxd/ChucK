@@ -1,7 +1,9 @@
 <h1>ChucK</h1>
+
 <a href="https://github.com/yogeshxd/chuck/graphs/contributors%22%3E
   <img src="https://contrib.rocks/image?repo=yogeshxd/chuck" />
 </a>
+                                                            
 ChucK is a discord bot that does all the stuff you can ever imagine of. From moderationm to playing music to little games, it covers it all.
 
 
