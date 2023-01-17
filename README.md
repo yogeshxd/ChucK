@@ -2,7 +2,7 @@
 ChucK is a discord bot that does all the stuff you can ever imagine of. From moderationm to playing music to little games, it covers it all.
 
 
-Need to tweek a some things like bot token and your discrd id.
+Need to tweek a some things like bot token and your discord id.
 
 Current suffix id 'DU ' but you can change it to your will.
 
