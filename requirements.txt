@@ -5,3 +5,4 @@ selenium
 youtube_dl
 PyNaCl
 easy-pil
+discord-ui
