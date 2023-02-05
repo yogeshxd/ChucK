@@ -124,8 +124,7 @@ class Music(commands.Cog, name='Music'):
         else:
             self.song_queue[ctx.guild].append(song)
             await self.edit_message(ctx)
-#-------------------------------------------------------------------------------------------------
- 
+
     @app_commands.command(name="volume", description="adjust the volume of song")
     async def volume(self, interaction: discord.Interaction, volume: float):
         voice = get(self.bot.voice_clients, guild=interaction.guild)
