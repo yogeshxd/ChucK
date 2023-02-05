@@ -63,7 +63,7 @@ class Music(commands.Cog, name='Music'):
             run_coroutine_threadsafe(voice.disconnect(), self.bot.loop)
             run_coroutine_threadsafe(self.message[ctx.guild].delete(), self.bot.loop)
 
-    @commands.command(aliases=['p'], brief='24h play [url/words]', description='Listen to a video from an url or from a youtube search')
+    @commands.command(aliases=['p'], brief='Du play [url/words]', description='Listen to a video from an url or from a youtube search')
     async def play(self, ctx, *, video: str):
         channel = ctx.author.voice.channel
         voice = get(self.bot.voice_clients, guild=ctx.guild)
@@ -124,7 +124,8 @@ class Music(commands.Cog, name='Music'):
         else:
             self.song_queue[ctx.guild].append(song)
             await self.edit_message(ctx)
-
+#-------------------------------------------------------------------------------------------------
+ 
     @app_commands.command(name="volume", description="adjust the volume of song")
     async def volume(self, interaction: discord.Interaction, volume: float):
         voice = get(self.bot.voice_clients, guild=interaction.guild)
