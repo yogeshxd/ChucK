@@ -1,5 +1,5 @@
 <h1>ChucK</h1>                                                      
-ChucK is a discord bot that does all the stuff you can ever imagine of. From moderationm to playing music to little games, it covers it all.
+ChucK is a discord bot that does all the stuff you can ever imagine of. From moderation to playing music to little games, it covers it all.
 
 
 Need to tweek a some things like bot token and your discord id.
