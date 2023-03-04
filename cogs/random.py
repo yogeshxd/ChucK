@@ -64,7 +64,7 @@ class Random(commands.Cog, name='Random'):
     async def valstat(self, ctx, username,tag):
     
         async with aiohttp.ClientSession() as session:
-            async with session.get(f'https://api.henrikdev.xyz/valorant/v1/mmr/ap/healme/115') as p:
+            async with session.get(f'https://api.henrikdev.xyz/valorant/v1/mmr/ap/{username}/{tag}') as p:
                 data2=await p.json()
                 global pic2, rank
                 pic2 = data2['data']['images']['small']
