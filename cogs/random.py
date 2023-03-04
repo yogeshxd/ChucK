@@ -52,7 +52,7 @@ class Random(commands.Cog, name='Random'):
 
     @commands.command(brief='Du ping', description='Checks wheather bot is online or not.')
     async def ping(self, ctx):
-        await ctx.send("Yes Yes I'm online my baby...")
+        await ctx.send("Yes Yes I'm online. Stop checking me out...")
 
     # @commands.command(brief='Du avt [member]', description='Gives avatar of the person.')
     # async def avt(self, ctx, avamember : discord.Member=None):
