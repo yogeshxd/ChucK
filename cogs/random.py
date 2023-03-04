@@ -17,7 +17,7 @@ class Random(commands.Cog, name='Random'):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(brief='24h toss [heads/tails]', description='Make a coin toss against the bot')
+    @commands.command(brief='Du toss [heads/tails]', description='Make a coin toss against the bot')
     async def toss(self, ctx, arg):
         if arg.lower() == 'heads' or arg.lower() == 'tails':
             piece = choice(['heads', 'tails'])
@@ -28,7 +28,7 @@ class Random(commands.Cog, name='Random'):
         else:
             await ctx.send('❌ You must input either "heads" or "tails"!')         
 
-    @commands.command(brief='24h poke', description="Mention someone randomly.")
+    @commands.command(brief='Du poke', description="Mention someone randomly.")
     async def poke(self, ctx):
         members = [x for x in ctx.guild.members if not x.bot]
         await ctx.send(f'Hey {choice(members).mention} !')
@@ -38,7 +38,7 @@ class Random(commands.Cog, name='Random'):
         number = randint(1, faces)
         await ctx.send(f'🎲 You rolled a {number} !')
 
-    @commands.command(brief='24h meme', description='Watch a random meme from reddit')
+    @commands.command(brief='Du meme', description='Watch a random meme from reddit')
     async def meme(self, ctx):
         data = rget('https://meme-api.com/gimme/SaimanSays').json()
         embed = (Embed(title=f":speech_balloon: r/{data['subreddit']} :", color=0x3498db)
@@ -46,21 +46,21 @@ class Random(commands.Cog, name='Random'):
                 .set_footer(text=data['postLink']))
         await ctx.send(embed=embed)
 
-    @commands.command(brief='24h rep [text]', description='Bot will repeat the text')
+    @commands.command(brief='Du rep [text]', description='Bot will repeat the text')
     async def rep(self, ctx, *, text):
         await ctx.send(text)
 
-    @commands.command(brief='24h ping', description='Checks wheather bot is online or not.')
+    @commands.command(brief='Du ping', description='Checks wheather bot is online or not.')
     async def ping(self, ctx):
         await ctx.send("Yes Yes I'm online my baby...")
 
-    # @commands.command(brief='24h avt [member]', description='Gives avatar of the person.')
+    # @commands.command(brief='Du avt [member]', description='Gives avatar of the person.')
     # async def avt(self, ctx, avamember : discord.Member=None):
     #     temp=discord.Embed(title='Here\'s your requested Avatar', color=randint(0, 0xffffff))
     #     temp.set_image(url=avamember.avatar.url)
     #     await ctx.send(embed=temp)
     
-    @commands.command(brief='24h valstat (name) (tag)', description='Give stats of valorant player')
+    @commands.command(brief='Du valstat (name) (tag)', description='Give stats of valorant player')
     async def valstat(self, ctx, username,tag):
     
         async with aiohttp.ClientSession() as session:
@@ -86,7 +86,7 @@ class Random(commands.Cog, name='Random'):
                 embed.set_thumbnail(url=pic2)
                 await ctx.send(embed=embed)
     
-    @commands.command(brief='24h valmatstat (name) (tag)', description='Give stats of last played match')
+    @commands.command(brief='Du valmatstat (name) (tag)', description='Give stats of last played match')
     async def valmatstat(self, ctx, username,tag):
         async with aiohttp.ClientSession() as session:
             async with session.get(f'https://api.henrikdev.xyz/valorant/v3/matches/ap/{username}/{tag}') as a:
