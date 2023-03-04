@@ -1,8 +1,10 @@
 ffmpeg
+aiohttp
 discord
 requests
 selenium
 youtube_dl
 PyNaCl
 easy-pil
-discord-ui
+simple_chalk
+discord.ui
