@@ -1,5 +1,7 @@
 <h4> Logs (Bottoms Up Approch)</h4>
 
+- **Combined Pause and Resume Buttons.**
+
 - **Added looping feature to music player.**
 
 - **Updated the old music player.**
