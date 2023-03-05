@@ -8,8 +8,6 @@ import config
 import asyncio
 from discord import Embed
 import logging
-from antispam import AntiSpamHandler
-from antispam.enums import Library
 
 handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w')
 discord.utils.setup_logging(level=logging.DEBUG, handler=handler, root=False)
@@ -45,9 +43,6 @@ async def on_message(message):
     await bot.handler.propagate(message)
     await bot.process_commands(message)
 
-@bot.command(hidden=True)
-async def reload(ctx, extension):
-    await bot.reload_extension(extension)
 
 @bot.command(pass_context=True)
 async def uptime(ctx):
