@@ -89,12 +89,12 @@ class Music(commands.Cog, name='Music'):
         if not voice.is_playing():
 #-------------------------------------------------------------------------------------------------
             async def buttonresume_callback(interaction: discord.Interaction):
-                await interaction.response.send_message("⏯️ Resumed", ephemeral=True, delete_after=10)
-                voice.resume()
-
-            async def buttonpause_callback(interaction: discord.Interaction):
-                await interaction.response.send_message("⏸️ Paused", ephemeral=True, delete_after=10)
-                voice.pause()
+                if voice.is_playing():
+                    await interaction.response.send_message("⏸️ Paused", ephemeral=True, delete_after=10)
+                    voice.pause()
+                else:
+                    await interaction.response.send_message("▶️ Playing", ephemeral=True, delete_after=10)
+                    voice.resume()
 
             async def buttonunloop_callback(interaction: discord.Interaction):
                 if not Music.looping:
@@ -115,11 +115,8 @@ class Music(commands.Cog, name='Music'):
 
                           
 #-------------------------------------------------------------------------------------------------
-            buttonresume = Button(label="Resume Song", style=discord.ButtonStyle.blurple, emoji="▶️")
+            buttonresume = Button(label="Play/Pause", style=discord.ButtonStyle.blurple, emoji="⏯️")
             buttonresume.callback = buttonresume_callback
-
-            buttonpause = Button(label="Pause Song", style=discord.ButtonStyle.red, emoji="⏸️")
-            buttonpause.callback = buttonpause_callback
 
             buttonunloop = Button(label="Loop Song", style=discord.ButtonStyle.grey, emoji="🎶")
             buttonunloop.callback = buttonunloop_callback
@@ -129,7 +126,6 @@ class Music(commands.Cog, name='Music'):
 
             view = View(timeout=None)
             view.add_item(buttonresume)
-            view.add_item(buttonpause)
             view.add_item(buttonunloop)
             view.add_item(buttonskip)
 #-------------------------------------------------------------------------------------------------
