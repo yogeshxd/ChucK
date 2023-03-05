@@ -51,7 +51,7 @@ class Music(commands.Cog, name='Music'):
         embed = self.song_queue[ctx.guild][0]['embed']
         content = "\n".join([f"({self.song_queue[ctx.guild].index(i)}) {i['title']}" for i in self.song_queue[ctx.guild][1:]]) if len(self.song_queue[ctx.guild]) > 1 else "No more songs in queue..."
         embed.set_field_at(index=3, name="Queue:", value=content, inline=False)
-        embed.set_field_at(index=4, name="Looping", value=Music.looping, inline=False)
+        embed.set_field_at(index=4, name="Looping:", value=Music.looping, inline=False)
         await self.message[ctx.guild].edit(embed=embed)
 
     def play_next(self, ctx, looping, cutsong):
