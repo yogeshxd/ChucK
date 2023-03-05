@@ -1,5 +1,7 @@
 <h4> Logs </h4>
 
+- **Added looping feature to music player.**
+
 - **Updated the old music player.**
 
 - **Added support for slash commands. (Fixed all existing issues(New commands coming soon)**
