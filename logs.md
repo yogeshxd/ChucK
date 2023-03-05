@@ -1,4 +1,4 @@
-<h4> Logs </h4>
+<h4> Logs (Bottoms Up Approch)</h4>
 
 - **Added looping feature to music player.**
 
