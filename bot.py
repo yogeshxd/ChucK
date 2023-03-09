@@ -37,11 +37,6 @@ async def on_ready():
     global start_time
     start_time = time.time()
     await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name='Du help | Du invite'))
-    
-@bot.event
-async def on_message(message):
-    await bot.handler.propagate(message)
-    await bot.process_commands(message)
 
 
 @bot.command(pass_context=True)
