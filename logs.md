@@ -1,5 +1,7 @@
 <h4> Logs (Bottoms Up Approch)</h4>
 
+- **Added multiple instance support for Music.**
+
 - **Combined Pause and Resume Buttons.**
 
 - **Added looping feature to music player.**
