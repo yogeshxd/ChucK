@@ -1,5 +1,7 @@
 <h4> Logs (Bottoms Up Approch)</h4>
 
+- **Fixed Music error and improved bot efficiency.**
+
 - **Combined Pause and Resume Buttons.**
 
 - **Added looping feature to music player.**
