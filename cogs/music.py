@@ -2,20 +2,24 @@ from discord import Embed, FFmpegPCMAudio, PCMVolumeTransformer
 from discord.ext import commands
 from discord.utils import get
 from discord import app_commands
-
-from youtube_dl import YoutubeDL
+from yt_dlp import YoutubeDL
 from asyncio import run_coroutine_threadsafe
-import requests
 import discord
-import discord.ui
-from  discord.ui import View, Button, Select
+from discord.ui import View, Button
+
+MAX_SERVERS = 2  # Maximum number of servers the bot can play music in concurrently
+active_servers = set()  # Set to track active server IDs
+
 
 class Music(commands.Cog, name='Music'):
     """
-    Can be used by anyone and allows you to listen to music or videos.
+    Music cog for playing audio from YouTube or other sources.
     """
-    YDL_OPTIONS = {'format': 'bestaudio', 'noplaylist':'True'}
-    FFMPEG_OPTIONS = {'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5', 'options': '-vn'}
+    YDL_OPTIONS = {'format': 'bestaudio/best', 'noplaylist': 'True'}
+    FFMPEG_OPTIONS = {
+        'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5',
+        'options': '-vn'
+    }
     looping = False
 
     def __init__(self, bot):
@@ -25,127 +29,198 @@ class Music(commands.Cog, name='Music'):
 
     @staticmethod
     def parse_duration(duration):
-        result = []
-        m, s = divmod(duration, 60)
-        h, m = divmod(m, 60)
+        """Convert duration in seconds to H:M:S format."""
+        h, m = divmod(duration, 3600)
+        m, s = divmod(m, 60)
         return f'{h:d}:{m:02d}:{s:02d}'
 
     @staticmethod
     def search(author, arg):
+        """Search for a song using yt-dlp and return its details."""
         with YoutubeDL(Music.YDL_OPTIONS) as ydl:
-            try: requests.get(arg)
-            except: info = ydl.extract_info(f"ytsearch:{arg}", download=False)['entries'][0]
-            else: info = ydl.extract_info(arg, download=False)
+            try:
+                requests.get(arg)  # Test if arg is a URL
+                info = ydl.extract_info(arg, download=False)
+            except:
+                info = ydl.extract_info(f"ytsearch:{arg}", download=False)['entries'][0]
+
+            # Extract audio URL
+            audio_url = None
+            for fmt in info['formats']:
+                if fmt.get('acodec') != 'none' and fmt.get('vcodec') == 'none':  # Audio-only format
+                    audio_url = fmt['url']
+                    break
+            if not audio_url:
+                raise Exception("No suitable audio format found.")
 
         embed = (Embed(title='🎵 Now playing:', description=f"[{info['title']}]({info['webpage_url']})", color=0xdbcb34)
-                .add_field(name='Duration', value=Music.parse_duration(info['duration']))
-                .add_field(name='Asked by', value=author)
-                .add_field(name='Uploader', value=f"[{info['uploader']}]({info['channel_url']})")
-                .add_field(name="Queue", value=f"No queued musics")
-                .add_field(name="Looping", value=Music.looping)
-                .set_thumbnail(url=info['thumbnail']))
+                 .add_field(name='Duration', value=Music.parse_duration(info['duration']))
+                 .add_field(name='Asked by', value=author)
+                 .add_field(name='Uploader', value=f"[{info['uploader']}]({info['channel_url']})")
+                 .add_field(name="Queue", value="No queued songs")
+                 .add_field(name="Looping", value=Music.looping)
+                 .set_thumbnail(url=info['thumbnail']))
 
-        return {'embed': embed, 'source': info['formats'][0]['url'], 'title': info['title']}
+        return {'embed': embed, 'source': audio_url, 'title': info['title']}
 
     async def edit_message(self, ctx):
+        """Update the queue message with the current songs."""
         embed = self.song_queue[ctx.guild][0]['embed']
-        content = "\n".join([f"({self.song_queue[ctx.guild].index(i)}) {i['title']}" for i in self.song_queue[ctx.guild][1:]]) if len(self.song_queue[ctx.guild]) > 1 else "No more songs in queue..."
+        content = "\n".join([f"({self.song_queue[ctx.guild].index(i)}) {i['title']}" for i in self.song_queue[ctx.guild][1:]]) \
+            if len(self.song_queue[ctx.guild]) > 1 else "No more songs in queue..."
         embed.set_field_at(index=3, name="Queue:", value=content, inline=False)
         embed.set_field_at(index=4, name="Looping:", value=Music.looping, inline=False)
         await self.message[ctx.guild].edit(embed=embed)
 
     def play_next(self, ctx, looping, cutsong):
+        """Play the next song in the queue."""
         voice = get(self.bot.voice_clients, guild=ctx.guild)
         if not looping:
             if len(self.song_queue[ctx.guild]) > 1:
                 del self.song_queue[ctx.guild][0]
                 run_coroutine_threadsafe(self.edit_message(ctx), self.bot.loop)
-                voice.play(FFmpegPCMAudio(self.song_queue[ctx.guild][0]['source'], **Music.FFMPEG_OPTIONS), after=lambda e: self.play_next(ctx, Music.looping, cutsong=self.song_queue[ctx.guild][0]['source']))
+                voice.play(
+                    FFmpegPCMAudio(self.song_queue[ctx.guild][0]['source'], **Music.FFMPEG_OPTIONS),
+                    after=lambda e: self.play_next(ctx, Music.looping, cutsong=self.song_queue[ctx.guild][0]['source'])
+                )
                 voice.source = PCMVolumeTransformer(voice.source, volume=1.0)
-                voice.is_playing()
             else:
                 run_coroutine_threadsafe(voice.disconnect(), self.bot.loop)
+                active_servers.remove(ctx.guild.id)  # Remove the server from active_servers when it disconnects
                 run_coroutine_threadsafe(self.message[ctx.guild].delete(), self.bot.loop)
         else:
-            voice.play(FFmpegPCMAudio(cutsong, **Music.FFMPEG_OPTIONS), after=lambda e: self.play_next(ctx, Music.looping, cutsong))
+            voice.play(
+                FFmpegPCMAudio(cutsong, **Music.FFMPEG_OPTIONS),
+                after=lambda e: self.play_next(ctx, Music.looping, cutsong)
+            )
             voice.source = PCMVolumeTransformer(voice.source, volume=1.0)
-            voice.is_playing()
 
-            
-
-    @commands.command(aliases=['p'], brief='Du play [url/words]', description='Listen to a video from an url or from a youtube search')
+    @commands.command(aliases=['p'], brief='Play [url/words]', description='Play a video from a URL or search.')
     async def play(self, ctx, *, video: str):
+        # Check if the bot has already reached the max number of active servers
+        if len(active_servers) >= MAX_SERVERS:
+            await ctx.send("Maximum number of active servers reached. Please try again later.")
+            return
+
+        # Ensure the user is in a voice channel
+        if not ctx.author.voice:
+            await ctx.send("You need to be in a voice channel to play music.")
+            return
+
         channel = ctx.author.voice.channel
         voice = get(self.bot.voice_clients, guild=ctx.guild)
         song = Music.search(ctx.author.mention, video)
 
+        
+        # Check if the bot is already in a voice channel and whether the user is in the same channel
         if voice and voice.is_connected():
-            await voice.move_to(channel)
+            if voice.channel != channel:
+                await ctx.send(f"Cannot play music. The bot is already playing in {voice.channel.name}.")
+                return
+            else:
+                await voice.move_to(channel)
         else:
-            voice = await channel.connect()     
+            voice = await channel.connect()
+            active_servers.add(ctx.guild.id)
 
         await ctx.message.delete()
-        
+
         if not voice.is_playing():
-#-------------------------------------------------------------------------------------------------
+            buttonresume = Button(label="Play/Pause", style=discord.ButtonStyle.blurple, emoji="▶️")
+            buttonloop = Button(label="LoopSong", style=discord.ButtonStyle.grey, emoji="🎶")
+            buttonskip = Button(label="SkipSong", style=discord.ButtonStyle.green, emoji="⏭️")
+
             async def buttonresume_callback(interaction: discord.Interaction):
+                # Ensure the user is in a voice channel
+                if not interaction.user.voice:
+                    await interaction.response.send_message("You need to be in a voice channel to play/pause the song.", ephemeral=True)
+                    return
+
+                # Ensure the user is in the same voice channel as the bot
+                if voice.channel != interaction.user.voice.channel:
+                    await interaction.response.send_message("You need to be in the same voice channel as the bot to play/pause the song.", ephemeral=True)
+                    return
+                
                 if voice.is_playing():
-                    await interaction.response.send_message("⏸️ Paused", ephemeral=True, delete_after=10)
                     voice.pause()
+                    await interaction.response.send_message("⏸️ Paused", ephemeral=True)
                 else:
-                    await interaction.response.send_message("▶️ Playing", ephemeral=True, delete_after=10)
                     voice.resume()
+                    await interaction.response.send_message("▶️ Playing", ephemeral=True)
 
-            async def buttonunloop_callback(interaction: discord.Interaction):
-                if not Music.looping:
-                    await interaction.response.send_message("🎶 Looping", ephemeral=True, delete_after=10)
-                    Music.looping = not Music.looping
-                    run_coroutine_threadsafe(self.edit_message(ctx), self.bot.loop)
-                else:
-                    await interaction.response.send_message("🎶 UnLooped", ephemeral=True, delete_after=10)
-                    Music.looping = not Music.looping
-                    run_coroutine_threadsafe(self.edit_message(ctx), self.bot.loop)
-            
+            async def buttonloop_callback(interaction: discord.Interaction):
+                # Ensure the user is in a voice channel
+                if not interaction.user.voice:
+                    await interaction.response.send_message("You need to be in a voice channel to loop the song.", ephemeral=True)
+                    return
+
+                # Ensure the user is in the same voice channel as the bot
+                if voice.channel != interaction.user.voice.channel:
+                    await interaction.response.send_message("You need to be in the same voice channel as the bot to loop the song.", ephemeral=True)
+                    return
+                
+                Music.looping = not Music.looping
+                await interaction.response.send_message(f"Looping: {Music.looping}", ephemeral=True)
+                await self.edit_message(ctx)
+
             async def buttonskip_callback(interaction: discord.Interaction):
+                # Ensure the user is in a voice channel
+                if not interaction.user.voice:
+                    await interaction.response.send_message("You need to be in a voice channel to skip the song.", ephemeral=True)
+                    return
+
+                # Ensure the user is in the same voice channel as the bot
+                if voice.channel != interaction.user.voice.channel:
+                    await interaction.response.send_message("You need to be in the same voice channel as the bot to skip the song.", ephemeral=True)
+                    return
+                
                 if not Music.looping:
-                    await interaction.response.send_message("⏭️ Skipped", ephemeral=True, delete_after=10)
                     voice.stop()
+                    await interaction.response.send_message("⏭️ Skipped", ephemeral=True)
                 else:
-                    await interaction.response.send_message("⏭️ While looping, You can't skip!!", ephemeral=True, delete_after=10)
+                    await interaction.response.send_message("⏭️ Cannot skip while looping!", ephemeral=True)
 
-                          
-#-------------------------------------------------------------------------------------------------
-            buttonresume = Button(label="Play/Pause", style=discord.ButtonStyle.blurple, emoji="⏯️")
             buttonresume.callback = buttonresume_callback
-
-            buttonunloop = Button(label="Loop Song", style=discord.ButtonStyle.grey, emoji="🎶")
-            buttonunloop.callback = buttonunloop_callback
-            
-            buttonskip = Button(label="Skip Song", style=discord.ButtonStyle.green, emoji="⏭️")
+            buttonloop.callback = buttonloop_callback
             buttonskip.callback = buttonskip_callback
 
             view = View(timeout=None)
             view.add_item(buttonresume)
-            view.add_item(buttonunloop)
+            view.add_item(buttonloop)
             view.add_item(buttonskip)
-#-------------------------------------------------------------------------------------------------
 
             self.song_queue[ctx.guild] = [song]
             self.message[ctx.guild] = await ctx.send(embed=song['embed'], view=view)
-            voice.play(FFmpegPCMAudio(song['source'], **Music.FFMPEG_OPTIONS), after=lambda e: self.play_next(ctx, Music.looping, song['source']))
-            voice.source = PCMVolumeTransformer(voice.source, volume=1.0)
-            voice.is_playing()
+            try:
+                voice.play(
+                    FFmpegPCMAudio(song['source'], **Music.FFMPEG_OPTIONS),
+                    after=lambda e: self.play_next(ctx, Music.looping, song['source'])
+                )
+                voice.source = PCMVolumeTransformer(voice.source, volume=1.0)
+            except Exception as e:
+                await ctx.send("An error occurred while trying to play the audio.")
         else:
             self.song_queue[ctx.guild].append(song)
             await self.edit_message(ctx)
-#-------------------------------------------------------------------------------------------------
- 
-    @app_commands.command(name="volume", description="adjust the volume of song")
+
+    @app_commands.command(name="volume", description="Adjust the volume of the song.")
     async def volume(self, interaction: discord.Interaction, volume: float):
         voice = get(self.bot.voice_clients, guild=interaction.guild)
-        new_volume = volume/100                   
-        voice.source.volume = new_volume
-        await interaction.response.send_message(f"Volume: {volume}", ephemeral=True, delete_after=10)
+        if not interaction.user.voice:
+            await interaction.response.send_message("You need to be in a voice channel to adjust the volume.", ephemeral=True)
+            return
+
+        # Ensure the user is in the same voice channel as the bot
+        if voice.channel != interaction.user.voice.channel:
+            await interaction.response.send_message("You need to be in the same voice channel as the bot to adjust the volume.", ephemeral=True)
+            return
+
+        if voice and voice.is_playing():
+            voice.source.volume = volume / 100
+            await interaction.response.send_message(f"Volume set to {volume}%", ephemeral=True)
+        else:
+            await interaction.response.send_message("No audio is playing currently.", ephemeral=True)
+
 
 async def setup(bot):
     await bot.add_cog(Music(bot))
