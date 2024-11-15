@@ -4,5 +4,6 @@ requests
 selenium
 youtube_dl
 PyNaCl
+yt-dlp
 easy-pil
 discord-ui
