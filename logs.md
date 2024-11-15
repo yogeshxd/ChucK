@@ -2,7 +2,6 @@
 
 <h5> Patch 6 </h5>
 - **Fixed Music error and improved bot efficiency.**
-=======
 - **Added multiple instance support for Music.**
 
 <h5> Main </h5>
