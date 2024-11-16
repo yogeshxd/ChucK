@@ -19,14 +19,10 @@
 - **Added a new improved welcome msg.**
 
 - **Added uptime command**
-
-- **Added Welcome msgs.**
  
- - **Fixed Mute command.**
+- **Fixed Mute command.**
  
- - **Added logging system. Now a log file will be created after you start the bot.**
-
- - **Added new waifu ai. type ```Du start waifu``` to interact with it**
+- **Added logging system. Now a log file will be created after you start the bot.**
 
  - **updated the code according to new discord.py changes and also added config file to make it easy to setup the bot.**
 
